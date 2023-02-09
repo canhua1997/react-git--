@@ -1,8 +1,24 @@
 import React, {Component} from 'react';
 import './index.css'
+import PubSub from 'pubsub-js'
+
 class List extends Component {
+
+    state = {//初始化状态
+        users:[], //users初始值为数组
+        isFirst:true,//是否第一次打开页面
+        isLoading:false,//标识是否处于加载
+        err:''//存储请求相关错误信息
+    }
+
+    componentDidMount() {
+        PubSub.subscribe('change',(_,data) => {
+            this.setState(data)
+        })
+    }
+
     render() {
-        const {users,isFirst,isLoading,err} = this.props
+        const {users,isFirst,isLoading,err} = this.state
         return (
             <div className="row">
                 {
